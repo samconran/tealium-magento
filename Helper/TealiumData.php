@@ -578,16 +578,16 @@ class TealiumData extends AbstractHelper
 			
 			
 			// https://magento.stackexchange.com/questions/230052/what-is-alternative-for-cacheable-false
-			
+			$quoteItems = $quote->getAllVisibleItems();
 			if(!empty($ItemsQty)){
-				foreach ($quote->getAllVisibleItems() as $item) {
+				foreach ($quoteItems as $item) {
 					$itemTotal[] = $item->getPrice();
 				}
 				if(!empty($itemTotal)){
 					$itemTotals = array_sum($itemTotal);
 				}
 				
-				foreach ($quote->getAllVisibleItems() as $item) {
+				foreach ($quoteItems as $item) {
 					$checkout_ids[] = $item->getProductId();
 					$checkout_skus[] = $item->getSku();
 					$checkout_names[] = $item->getName();
@@ -620,9 +620,13 @@ class TealiumData extends AbstractHelper
 							$parentCatName[] = $parent->getName();
 						}
 					}
-				   	$productCat = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getId());
+                    // Commenting out as this value doesn't appear to be used. The only $productCat uses are above.
+                    // $productCat = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getId());
 					
-					$productRepository = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getProductId());
+                    // This appears to call the same objecTManager -> create -> load sequence as the $productCat defintion on line 603
+					// $productRepository = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getProductId());
+                    // Replacing with this to avoid calling load again:
+                    $productRepository = $productCat;
 					
 					$checkout_url[] = $productRepository->getProductUrl();
 					$checkout_images[] = $mediaUrl.$productRepository->getImage();
