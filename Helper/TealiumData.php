@@ -551,7 +551,6 @@ class TealiumData extends AbstractHelper
         $checkout_qtys = false;
         $checkout_prices = false;
         $checkout_original_prices = false;
-        $checkout_brands = [];
 		$categoryName = false;
 		$GrandTotal = false;
 		$ItemsQty = false;
@@ -620,7 +619,7 @@ class TealiumData extends AbstractHelper
 							$parentCatName[] = $parent->getName();
 						}
 					}
-                    // Commenting out as this value doesn't appear to be used. The only $productCat uses are above.
+                    // Commenting out as this value doesn't appear to be used. The only $productCat uses are above, so this redefinition seems pointless?
                     // $productCat = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getId());
 					
                     // This appears to call the same objecTManager -> create -> load sequence as the $productCat defintion on line 603
@@ -637,7 +636,6 @@ class TealiumData extends AbstractHelper
 						number_format($item->getPrice(), 2, ".", "");
 					$checkout_original_prices[] =
 						number_format($item->getProduct()->getPrice(), 2, ".", "");
-					$checkout_brands[] = $item->getProduct()->getBrand();
 					
 					$getCoupon = $this->_objectManager->get('Magento\Checkout\Block\Cart\Coupon');
 			
@@ -652,7 +650,7 @@ class TealiumData extends AbstractHelper
 						$rule = $saleRule->load($ruleId);
 						//by_fixed by_percent cart_fixed buy_x_get_y 
 						$discountAmount = $rule->getDiscountAmount();
-						$itemSku = $item->getSku();
+						//$itemSku = $item->getSku();
 						$itemPrice = $item->getPrice();
 						if($rule->getSimpleAction() == 'by_percent'){
 								$itemPrice = $item->getPrice();
