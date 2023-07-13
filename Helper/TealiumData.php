@@ -577,8 +577,8 @@ class TealiumData extends AbstractHelper
 			
 			
 			// https://magento.stackexchange.com/questions/230052/what-is-alternative-for-cacheable-false
-			$quoteItems = $quote->getAllVisibleItems();
 			if(!empty($ItemsQty)){
+                $quoteItems = $quote->getAllVisibleItems();
 				// foreach ($quoteItems as $item) {
 				// 	$itemTotal[] = $item->getPrice();
 				// }
